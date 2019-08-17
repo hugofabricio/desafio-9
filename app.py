@@ -33,7 +33,7 @@ def result():
     data = client.lec.get(device, eventId)
     payload = data['payload']
     dt = json.loads(base64.b64decode(payload).decode('utf-8'))
-    dt = dados['data']
+    dt = dt['data']
     volume = ((4 * math.pi * 1**3) / 3) / 2
 
     resposta = {
