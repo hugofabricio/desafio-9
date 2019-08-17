@@ -1,0 +1,6 @@
+iso8601>=0.1.12
+pytz>=2018.9
+pyyaml>=3.13
+paho-mqtt>=1.4.0
+requests>=2.21.0
+requests_toolbelt>=0.8.0

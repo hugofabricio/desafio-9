@@ -4,6 +4,10 @@ import json
 import numpy as np
 import io
 from PIL import Image
+import wiotp.sdk.application
+import wiotp.sdk.device
+import base64
+import math
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -14,17 +18,29 @@ def hello():
     error=None
     return render_template('index.html', error=error)
 
+def myEventCallback(event):
+    return json.dumps(event.data)
+
 @app.route("/iot", methods=['GET'])
-def result():
-    print(request)
-    
-    # Implemente sua lógica aqui e insira as respostas na variável 'resposta'
-    
+def result():    
+    options = wiotp.sdk.application.parseConfigFile("app.yaml")
+    client = wiotp.sdk.application.ApplicationClient(options)
+    client.subscribeToDeviceEvents(typeId="maratona", deviceId="d9", eventId="sensor", msgFormat="json")
+    client.connect()
+    eventId = "sensor"
+    device = {"typeId": "maratona", "deviceId": "d9"}
+
+    data = client.lec.get(device, eventId)
+    payload = data['payload']
+    dt = json.loads(base64.b64decode(payload).decode('utf-8'))
+    dt = dados['data']
+    volume = ((4 * math.pi * 1**3) / 3) / 2
+
     resposta = {
-        "iotData": "data",
-        "itu": "data",
-        "volumeAgua": "data",
-        "fahrenheit": "data"
+        "iotData": dt,
+        "itu": dt['temperatura'] - 0.55 * ( 1 - dt['umidade_ar'] ) * (dt['temperatura'] - 14),
+        "volumeAgua": dt['umidade_solo'] * volume,
+        "fahrenheit": dt['temperatura'] * 9/5 + 32
     }
     response = app.response_class(
         response=json.dumps(resposta),
