@@ -34,13 +34,12 @@ def result():
     payload = data['payload']
     dt = json.loads(base64.b64decode(payload).decode('utf-8'))
     dt = dt['data']
-    volume = ((4 * math.pi * 1**3) / 3) / 2
 
     resposta = {
         "iotData": dt,
         "itu": dt['temperatura'] - 0.55 * ( 1 - dt['umidade_ar'] ) * (dt['temperatura'] - 14),
-        "volumeAgua": dt['umidade_solo'] * volume,
-        "fahrenheit": dt['temperatura'] * 9/5 + 32
+        "volumeAgua": dt['umidade_solo'] * ((4 * math.pi * 1**3) / 3) / 2,
+        "fahrenheit": 9 * dt['temperatura'] / 5 + 32
     }
     response = app.response_class(
         response=json.dumps(resposta),
