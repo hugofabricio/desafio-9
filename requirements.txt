@@ -14,6 +14,6 @@ pytz==2019.2
 PyYAML==5.1.2
 requests==2.22.0
 requests-toolbelt==0.9.1
-urllib3==1.25.3
+urllib3==1.26.5
 Werkzeug==0.15.5
 wiotp-sdk==0.9.5
